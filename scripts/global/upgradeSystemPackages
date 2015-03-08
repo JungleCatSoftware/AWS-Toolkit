@@ -9,7 +9,7 @@ if apt-get --version &>/dev/null; then
 	apt-get update &>/dev/null
 	exval=$?
 	if [ $exval -eq 0 ]; then
-		echo -e "Running apt-get upgrade..."
+		echo -e "\tRunning apt-get upgrade..."
 		apt-get upgrade --assume-yes &>/dev/null
 		exval=$?
 	fi
