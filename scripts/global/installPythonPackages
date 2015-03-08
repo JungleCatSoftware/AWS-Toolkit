@@ -9,6 +9,8 @@ if [ $# -lt 1 ]; then
 	exit 1
 fi
 
+echo -e "\tPython packages to install:\n\t\t$@"
+
 if pip3 --version &>/dev/null; then
 	pip=pip3
 elif pip --version &>/dev/null; then

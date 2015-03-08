@@ -9,6 +9,8 @@ if [ $# -lt 1 ]; then
 	exit 1
 fi
 
+echo -e "\tSystem packages to install:\n\t\t$@"
+
 if apt-get --version &>/dev/null; then
 	echo -e "\tRunning apt-get install..."
 	apt-get install --assume-yes "$@" &>/dev/null
