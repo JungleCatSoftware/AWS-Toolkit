@@ -4,6 +4,10 @@ which apt-get &>/dev/null
 apt=$?
 if [ $apt -eq 0 ]; then
 	apt-get update &>/dev/null
+	exval=$?
+	if [ $exval -ne 0 ]; then
+		exit $exval
+	fi
 	apt-get upgrade --assume-yes &>/dev/null
 	exit $?
 fi
