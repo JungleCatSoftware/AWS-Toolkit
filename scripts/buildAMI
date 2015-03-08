@@ -40,4 +40,6 @@ upgradeSystemPackages
 installSystemPackages python3 python3-pip puppet cloud-utils
 installPythonPackages awscli
 
+createAMI
+
 echo -e "\nFinished at $(date +"${dateformat}")"
