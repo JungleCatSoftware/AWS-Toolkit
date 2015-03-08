@@ -5,7 +5,7 @@ if [[ "x${dateformat}" != "x" ]]; then
 fi
 
 if apt-get --version &>/dev/null; then
-	echo -e "Running apt-get update..."
+	echo -e "\tRunning apt-get update..."
 	apt-get update &>/dev/null
 	exval=$?
 	if [ $exval -eq 0 ]; then
@@ -16,7 +16,7 @@ if apt-get --version &>/dev/null; then
 fi
 
 if yum --version &>/dev/null; then
-	echo -e "Running yum upgrade..."
+	echo -e "\tRunning yum upgrade..."
 	yum --assumeyes upgrade  &>/dev/null
 	exval=$?
 fi
