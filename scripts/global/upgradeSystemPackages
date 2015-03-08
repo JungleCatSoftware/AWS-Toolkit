@@ -1,0 +1,16 @@
+#!/bin/bash
+
+which apt-get &>/dev/null
+apt=$?
+if [ $apt -eq 0 ]; then
+	apt-get update &>/dev/null
+	apt-get upgrade --assume-yes &>/dev/null
+	exit $?
+fi
+
+which yum &>/dev/null
+yum=$?
+if [ $yum -eq 0 ]; then
+	yum --assumeyes upgrade  &>/dev/null
+	exit $?
+fi
