@@ -1,7 +1,7 @@
 #!/bin/bash
 maintainer=JungleCatSoftware
 repo=AWS-Toolkit
-release=0.0.2
+release=0.0.3
 targetdir=/opt/${maintainer}
 mkdir -p ${targetdir} &&\
 curl -L https://github.com/${maintainer}/${repo}/archive/${release}.tar.gz |\
