@@ -1,15 +1,24 @@
 # AWS-Toolkit
 Tools for generating and bootstrapping EC2 AMIs
 
-## Use
-Copy the contents of the `UserData` file into the User Data section
-of an AWS EC2 instance's Launch Configuration. This will cause the
-instance to reach out and pull the specified release archive from
-GitHub and execute the contained `scripts/run` script when the
-instance is booted.
+When used as below, the launched instance will download a release of
+this repository and use it to load a base configuration and save it
+as an AMI.
 
-Alternatively, the following can be used instead to automatically
-pull the latest version:
+## How to Use
+There are two methods for using this code to bootstrap your EC2 AMIs
+
+### Full User Data
+The complete contents of the `UserData` script can be pasted into the
+"User data" section under "Advanced Details" on the "Configure
+Instance Details" step when launching a new EC2 instance.
+
+### Curl
+The following short script can be used in your instance's "User data"
+instead of the full `UserData` script and will download and execute
+the most recent version of the `UserData` script automatically and
+will ensure that the most recent release archive from GitHub is used.
+
 ```bash
 #!/bin/bash
 curl -L https://raw.githubusercontent.com/JungleCatSoftware/AWS-Toolkit/master/UserData | /bin/bash
