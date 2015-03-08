@@ -1,0 +1,18 @@
+#!/bin/bash
+
+if [ $# -lt 1 ]; then
+	echo "Please specify at least one package to install" >&2
+	exit 1
+fi
+
+if pip3 --version &>/dev/null; then
+	pip=pip3
+elif pip --version &>/dev/null; then
+	pip=pip
+else
+	echo "No suitable pip found found" >&2
+	exit 2
+fi
+
+$pip install --upgrade "$@" #&>/dev/null
+exit $?
