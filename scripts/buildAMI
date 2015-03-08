@@ -6,8 +6,8 @@ echo "*************************"
 export dateformat='%Y-%m-%d %H:%M:%S.%N UTC%z'
 
 scriptroot=$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )
-distro=$(lsb_release -i | sed -r 's/^Distributor ID:\W*(.*)$/\L\1/')
-release=$(lsb_release -c | sed -r 's/^Codename:\W*(.*)$/\L\1/')
+lsbdistro=$(lsb_release -i | sed -r 's/^Distributor ID:\W*(.*)$/\L\1/')
+lsbreleasename=$(lsb_release -c | sed -r 's/^Codename:\W*(.*)$/\L\1/')
 
 # Add global scripts directory
 globalscripts="${scriptroot}/global"
@@ -17,14 +17,14 @@ if [ -d "${globalscripts}" ]; then
 fi
 
 # Add distro-specific scripts directory
-distroscripts="${scriptroot}/${distro}/all"
+distroscripts="${scriptroot}/${lsbdistro}/all"
 if [ -d "${distroscripts}" ]; then
 	echo "Found distro-specific scripts: ${distroscripts}"
 	PATH="${distroscripts}:${PATH}"
 fi
 
 # Add release-specific scripts directory
-releasescripts="${scriptroot}/${distro}/${release}"
+releasescripts="${scriptroot}/${lsbdistro}/${lsbreleasename}"
 if [ -d "${releasescripts}" ]; then
 	echo "Found release-specific scripts: ${releasescripts}"
 	PATH="${releasescripts}:${PATH}"
