@@ -1,7 +1,7 @@
 #!/bin/bash
 
 if [ $# -lt 1 ]; then
-	echo "Please specify more than one package to install" >&2
+	echo "Please specify at least one package to install" >&2
 	exit 1
 fi
 
