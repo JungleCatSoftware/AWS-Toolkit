@@ -22,3 +22,4 @@ if [ -d "${releasescripts}" ]; then
   PATH="${releasescripts}:${PATH}"
 fi
 
+export PATH
