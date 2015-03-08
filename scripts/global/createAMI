@@ -5,12 +5,14 @@ if [[ "x${dateformat}" != "x" ]]; then
 fi
 
 instanceid=$(ec2metadata --instance-id)
+availabilityzone=$(ec2metadata --availability-zone)
+region=${availabilityzone::-1}
 timestamp=$(date +"%s")
 aminame="${maintainer}_${release}_${timestamp}"
 description="Auto-generated at $(date --date="@${timestamp}" +"${dateformat}") from ${maintainer}/${repo}@${release}"
 
 echo -e "\tCreating AMI \"${aminame}\"..."
-aws ec2 create-image --instance-id "${instanceid}" --name "${aminame}" --no-reboot &>/dev/null
+aws ec2 create-image --region ${region} --instance-id "${instanceid}" --name "${aminame}" --no-reboot &>/dev/null
 exval=$?
 
 if [ $exval -eq 0 ]; then
