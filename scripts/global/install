@@ -1,0 +1,22 @@
+#!/bin/bash
+
+if [ $# -lt 1 ]; then
+	echo "Please specify more than one package to install" >&2
+	exit 1
+fi
+
+which apt-get &>/dev/null
+apt=$?
+which yum &>/dev/null
+yum=$?
+
+if [ $apt -eq 0 ]; then
+	apt-get install --assume-yes "$@" &>/dev/null
+	exit $?
+elif [ $yum -eq 0 ]; then
+	yum -y install "$@" &>/dev/null
+	exit $?
+else
+	echo "No package mangers found" >&2
+	exit 2
+fi
