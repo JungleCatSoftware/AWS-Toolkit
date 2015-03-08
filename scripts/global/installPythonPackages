@@ -1,7 +1,11 @@
 #!/bin/bash
+echo "==Python Package Installer=="
+if [[ "x${dateformat}" != "x" ]]; then
+	echo -e "Begin at $(date +"${dateformat}")"
+fi
 
 if [ $# -lt 1 ]; then
-	echo "Please specify at least one package to install" >&2
+	echo -e "\t[FAIL] Please specify at least one package to install" >&2
 	exit 1
 fi
 
@@ -10,9 +14,16 @@ if pip3 --version &>/dev/null; then
 elif pip --version &>/dev/null; then
 	pip=pip
 else
-	echo "No suitable pip found found" >&2
+	echo -e "\t[FAIL] No suitable pip found found" >&2
 	exit 2
 fi
 
-$pip install --upgrade "$@" #&>/dev/null
-exit $?
+echo -e "\tRunning $pip install..."
+$pip install --upgrade "$@" &>/dev/null
+exval=$?
+if [ $exval -eq 0 ]; then
+	echo -e "\t[DONE]"
+else
+	echo -e "\t[FAIL] Code: ${exval}"
+	exit $exval
+fi

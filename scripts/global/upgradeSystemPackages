@@ -1,16 +1,29 @@
 #!/bin/bash
+echo "==System Package Updater=="
+if [[ "x${dateformat}" != "x" ]]; then
+	echo -e "Begin at $(date +"${dateformat}")"
+fi
 
 if apt-get --version &>/dev/null; then
+	echo -e "Running apt-get update..."
 	apt-get update &>/dev/null
 	exval=$?
-	if [ $exval -ne 0 ]; then
-		exit $exval
+	if [ $exval -eq 0 ]; then
+		echo -e "Running apt-get upgrade..."
+		apt-get upgrade --assume-yes &>/dev/null
+		exval=$?
 	fi
-	apt-get upgrade --assume-yes &>/dev/null
-	exit $?
 fi
 
 if yum --version &>/dev/null; then
+	echo -e "Running yum upgrade..."
 	yum --assumeyes upgrade  &>/dev/null
-	exit $?
+	exval=$?
+fi
+
+if [ $exval -eq 0 ]; then
+	echo -e "\t[DONE]"
+else
+	echo -e "\t[FAIL] Code: ${exval}"
+	exit $exval
 fi

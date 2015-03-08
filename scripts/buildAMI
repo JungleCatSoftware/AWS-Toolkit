@@ -1,5 +1,10 @@
 #!/bin/bash
 
+echo "*************************"
+echo "* AWS EC2 AMI Generator *"
+echo "*************************"
+export dateformat='%Y-%m-%d %H:%M:%S.%N UTC%z'
+
 scriptroot=$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )
 distro=$(lsb_release -i | sed -r 's/^Distributor ID:\W*(.*)$/\L\1/')
 release=$(lsb_release -c | sed -r 's/^Codename:\W*(.*)$/\L\1/')
@@ -7,23 +12,30 @@ release=$(lsb_release -c | sed -r 's/^Codename:\W*(.*)$/\L\1/')
 # Add global scripts directory
 globalscripts="${scriptroot}/global"
 if [ -d "${globalscripts}" ]; then
+	echo "Found global scripts: ${globalscripts}"
 	PATH="${globalscripts}:${PATH}"
 fi
 
 # Add distro-specific scripts directory
 distroscripts="${scriptroot}/${distro}/all"
 if [ -d "${distroscripts}" ]; then
+	echo "Found distro-specific scripts: ${distroscripts}"
 	PATH="${distroscripts}:${PATH}"
 fi
 
 # Add release-specific scripts directory
 releasescripts="${scriptroot}/${distro}/${release}"
 if [ -d "${releasescripts}" ]; then
+	echo "Found release-specific scripts: ${releasescripts}"
 	PATH="${releasescripts}:${PATH}"
 fi
 
 export PATH
 
+echo -e "\nStarting at $(date +"${dateformat}")"
+
 upgradeSystemPackages
 installSystemPackages python3 python3-pip puppet cloud-utils
 installPythonPackages awscli
+
+echo -e "\nFinished at $(date +"${dateformat}")"

@@ -1,17 +1,30 @@
 #!/bin/bash
+echo "==System Package Installer=="
+if [[ "x${dateformat}" != "x" ]]; then
+	echo -e "Begin at $(date +"${dateformat}")"
+fi
 
 if [ $# -lt 1 ]; then
-	echo "Please specify at least one package to install" >&2
+	echo -e "\t[FAIL] Please specify at least one package to install" >&2
 	exit 1
 fi
 
 if apt-get --version &>/dev/null; then
+	echo -e "\tRunning apt-get install..."
 	apt-get install --assume-yes "$@" &>/dev/null
-	exit $?
+	exval=$?
 elif yum --version &>/dev/null; then
+	echo -e "\tRunning yum install..."
 	yum --assumeyes install "$@" &>/dev/null
-	exit $?
+	exval=$?
 else
-	echo "No package mangers found" >&2
+	echo -e "\t[FAIL] No package mangers found" >&2
 	exit 2
+fi
+
+if [ $exval -eq 0 ]; then
+	echo -e "\t[DONE]"
+else
+	echo -e "\t[FAIL] Code: ${exval}"
+	exit $exval
 fi
