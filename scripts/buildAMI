@@ -5,6 +5,8 @@ echo "* AWS EC2 AMI Generator *"
 echo "*************************"
 export dateformat='%Y-%m-%d %H:%M:%S.%N UTC%z'
 
+trap 'echo "Error on line $LINENO during build at $(date +"${dateformat}")" >&2; exit 99' ERR
+
 scriptroot=$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )
 lsbdistro=$(lsb_release -i | sed -r 's/^Distributor ID:\W*(.*)$/\L\1/')
 lsbreleasename=$(lsb_release -c | sed -r 's/^Codename:\W*(.*)$/\L\1/')
