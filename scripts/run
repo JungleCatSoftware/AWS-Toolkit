@@ -23,3 +23,6 @@ if [ -d "${releasescripts}" ]; then
 fi
 
 export PATH
+
+upgradeSystemPackages
+installSystemPackages python3 python3-pip puppet
