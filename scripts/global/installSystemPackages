@@ -14,7 +14,7 @@ if [ $apt -eq 0 ]; then
 	apt-get install --assume-yes "$@" &>/dev/null
 	exit $?
 elif [ $yum -eq 0 ]; then
-	yum -y install "$@" &>/dev/null
+	yum --assumeyes install "$@" &>/dev/null
 	exit $?
 else
 	echo "No package mangers found" >&2
