@@ -1,5 +1,5 @@
 #!/bin/bash
-echo "==System Package Installer=="
+echo -e "\n==System Package Installer=="
 if [[ "x${dateformat}" != "x" ]]; then
 	echo -e "Begin at $(date +"${dateformat}")"
 fi

@@ -1,5 +1,5 @@
 #!/bin/bash
-echo "==AMI Build=="
+echo -e "\n==AMI Build=="
 if [[ "x${dateformat}" != "x" ]]; then
 	echo -e "Begin at $(date +"${dateformat}")"
 fi
