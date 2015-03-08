@@ -1,8 +1,6 @@
 #!/bin/bash
 
-which apt-get &>/dev/null
-apt=$?
-if [ $apt -eq 0 ]; then
+if apt-get --version &>/dev/null; then
 	apt-get update &>/dev/null
 	exval=$?
 	if [ $exval -ne 0 ]; then
@@ -12,9 +10,7 @@ if [ $apt -eq 0 ]; then
 	exit $?
 fi
 
-which yum &>/dev/null
-yum=$?
-if [ $yum -eq 0 ]; then
+if yum --version &>/dev/null; then
 	yum --assumeyes upgrade  &>/dev/null
 	exit $?
 fi

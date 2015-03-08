@@ -5,15 +5,10 @@ if [ $# -lt 1 ]; then
 	exit 1
 fi
 
-which apt-get &>/dev/null
-apt=$?
-which yum &>/dev/null
-yum=$?
-
-if [ $apt -eq 0 ]; then
+if apt-get --version &>/dev/null; then
 	apt-get install --assume-yes "$@" &>/dev/null
 	exit $?
-elif [ $yum -eq 0 ]; then
+elif yum --version &>/dev/null; then
 	yum --assumeyes install "$@" &>/dev/null
 	exit $?
 else
