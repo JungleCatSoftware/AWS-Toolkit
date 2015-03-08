@@ -9,7 +9,7 @@ timestamp=$(date +"%s")
 aminame="${maintainer}_${release}_${timestamp}"
 description="Auto-generated at $(date --date="@${timestamp}" +"${dateformat}") from ${maintainer}/${repo}@${release}"
 
-echo "\tCreating AMI \"${aminame}\"..."
+echo -e "\tCreating AMI \"${aminame}\"..."
 aws ec2 create-image --instance-id "${instanceid}" --name "${aminame}" --no-reboot &>/dev/null
 exval=$?
 
