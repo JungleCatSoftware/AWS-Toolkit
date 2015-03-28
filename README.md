@@ -5,8 +5,14 @@ When used as below, the launched instance will download a release of
 this repository and use it to load a base configuration and save it
 as an AMI.
 
+## IAM Role
+When using these scripts to create AMIs, they must be granted a role
+with access to the following actions:
+
+- ec2:CreateImage
+
 ## How to Use
-There are two methods for using this code to bootstrap your EC2 AMIs
+There are two methods for using this code to bootstrap your EC2 AMIs.
 
 ### Full User Data
 The complete contents of the `UserData` script can be pasted into the
