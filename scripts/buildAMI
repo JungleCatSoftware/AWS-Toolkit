@@ -43,3 +43,5 @@ installPythonPackages awscli
 createAMI
 
 echo -e "\nFinished at $(date +"${dateformat}")"
+
+shutdown -h now
