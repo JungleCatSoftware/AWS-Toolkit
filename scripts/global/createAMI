@@ -12,7 +12,7 @@ aminame="${maintainer}_${release}_${timestamp}"
 description="Auto-generated at $(date --date="@${timestamp}" +"${dateformat}") from ${maintainer}/${repo}@${release}"
 
 echo -e "\tCreating AMI \"${aminame}\"..."
-aws ec2 create-image --region ${region} --instance-id "${instanceid}" --name "${aminame}" --no-reboot &>/dev/null
+aws ec2 create-image --region ${region} --instance-id "${instanceid}" --name "${aminame}" --no-reboot >/tmp/image_id 2>/dev/null
 exval=$?
 
 if [ $exval -eq 0 ]; then
