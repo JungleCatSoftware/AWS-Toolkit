@@ -1,10 +1,10 @@
 #!/bin/bash
 export maintainer=JungleCatSoftware
 export repo=AWS-Toolkit
-export release=v0.0.4
+export release=0.0.4
 targetdir=/opt/${maintainer}
 mkdir -p ${targetdir} &&\
-curl -L https://github.com/${maintainer}/${repo}/archive/${release}.tar.gz |\
+curl -L https://github.com/${maintainer}/${repo}/archive/v${release}.tar.gz |\
 tar -xz -C ${targetdir} &&\
 mv ${targetdir}/${repo}-${release} ${targetdir}/${repo} &&\
 ${targetdir}/${repo}/scripts/buildAMI &> /var/log/ami_build.log
