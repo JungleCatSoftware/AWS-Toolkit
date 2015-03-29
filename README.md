@@ -16,6 +16,7 @@ When using these scripts to create AMIs, the instance must be granted
 a role with access to the following actions:
 
 - ec2:CreateImage
+- ec2:DescribeImages
 
 ## How to Use
 Below are two methods for using this repo to bootstrap your EC2 AMIs.

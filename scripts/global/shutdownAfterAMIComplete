@@ -1,0 +1,27 @@
+#!/bin/bash
+echo -e "\n==Waiting for AMI to Finish=="
+if [[ "x${dateformat}" != "x" ]]; then
+	echo -e "Begin at $(date +"${dateformat}")"
+fi
+
+instanceid=$(ec2metadata --instance-id)
+availabilityzone=$(ec2metadata --availability-zone)
+region=${availabilityzone::-1}
+image_id=$(cat $image_id_path | grep ImageId | sed -E 's/.*"ImageId":\s*"(ami-.*)".*/\1/' | head -n1)
+image_state="pending"
+
+while [[ "x$image_state" == "xpending" ]]; do
+	sleep 30
+	echo -e "\tChecking for instance state..."
+	res=$(aws ec2 describe-images --image-ids "$image_id" --query 'Images[*].{State:State}' 2>/dev/null)
+	image_state=$(echo $res | grep State | sed -E 's/.*"State":\s*"(pending|available|failed)".*/\1/' | head -n1)
+	echo -e "\t\tFound state \"$image_state\""
+done
+
+if  [[ "x$image_state" == "xavailable" ]]; then
+	echo -e "\t[DONE]"
+else
+	echo -e "\t[FAIL]"
+fi
+
+shutdown -h now
