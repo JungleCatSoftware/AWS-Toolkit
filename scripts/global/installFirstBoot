@@ -1,0 +1,9 @@
+#!/usr/bin/puppet apply
+
+cron { 'First Boot Startup':
+  ensure      => present,
+  environment => "PATH=${path}",
+  user        => 'root',
+  command     => 'doFirstBoot',
+  special     => 'reboot',
+}

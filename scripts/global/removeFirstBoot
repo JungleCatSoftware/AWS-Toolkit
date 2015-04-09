@@ -1,0 +1,6 @@
+#!/usr/bin/puppet apply
+
+cron { 'First Boot Startup':
+  ensure => absent,
+  user   => 'root',
+}
