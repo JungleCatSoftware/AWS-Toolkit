@@ -1,0 +1,4 @@
+#!/bin/bash
+
+#Clean up so we don't run again next time
+removeFirstBoot
