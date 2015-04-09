@@ -6,7 +6,7 @@ release or branch of this repository and use it to load a base
 configuration and save it as an AMI in your AWS account.
 
 This allows for automation of installing core tools and dependencies
-needed in order to spin up application VMs in your EC2 environmet. By
+needed in order to spin up application VMs in your EC2 environment. By
 default, the scripts in this repository are made to update a stock
 Ubuntu image, install Python 3.0 and pip, Puppet, and AWS command-line
 tools.
