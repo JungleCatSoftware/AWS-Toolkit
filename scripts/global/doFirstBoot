@@ -1,0 +1,11 @@
+#!/bin/bash
+
+echo "*********************************************"
+echo "* Jungle Cat Software AWS-Toolkit FirstBoot *"
+echo "*********************************************"
+export dateformat='%Y-%m-%d %H:%M:%S.%N UTC%z'
+
+trap 'echo "Error on line $LINENO during FirstBoot at $(date +"${dateformat}")" >&2; exit 99' ERR
+
+#Clean up so we don't run again next time
+removeFirstBoot

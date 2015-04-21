@@ -6,7 +6,7 @@ fi
 
 cat << EOF > /etc/cron.d/FirstBoot
 PATH=$PATH
-@reboot root doFirstBoot > /var/log/firstrun.log 2>&1
+@reboot root doFirstBoot &> /var/log/firstboot.log
 EOF
 exval=$?
 
