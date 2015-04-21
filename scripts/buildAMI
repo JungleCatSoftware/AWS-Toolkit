@@ -1,8 +1,8 @@
 #!/bin/bash
 
-echo "*************************"
-echo "* AWS EC2 AMI Generator *"
-echo "*************************"
+echo "*************************************************"
+echo "* Jungle Cat Software AWS-Toolkit AMI Generator *"
+echo "*************************************************"
 export dateformat='%Y-%m-%d %H:%M:%S.%N UTC%z'
 
 trap 'echo "Error on line $LINENO during build at $(date +"${dateformat}")" >&2; exit 99' ERR
