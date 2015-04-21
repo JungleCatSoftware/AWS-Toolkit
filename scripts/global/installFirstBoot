@@ -1,9 +1,18 @@
-#!/usr/bin/puppet apply
+#!/bin/bash
+echo -e "\n==Install FirstBoot Cron=="
+if [[ "x${dateformat}" != "x" ]]; then
+	echo -e "Begin at $(date +"${dateformat}")"
+fi
 
-cron { 'First Boot Startup':
-  ensure      => present,
-  environment => "PATH=${path}",
-  user        => 'root',
-  command     => 'doFirstBoot',
-  special     => 'reboot',
-}
+cat << EOF > /etc/cron.d/FirstBoot
+PATH=$PATH
+@reboot root doFirstBoot
+EOF
+exval=$?
+
+if [ $exval -eq 0 ]; then
+        echo -e "\t[DONE]"
+else
+        echo -e "\t[FAIL] Code: ${exval}"
+        exit $exval
+fi
