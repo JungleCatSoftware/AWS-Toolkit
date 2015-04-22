@@ -11,13 +11,11 @@ image_id=$(cat $image_id_path | grep ImageId | sed -E 's/.*"ImageId":\s*"(ami-.*
 image_state="pending"
 
 while [[ "x$image_state" == "xpending" ]]; do
-	sleep 15
+	sleep 30
 	echo -e "\tChecking for instance state..."
 	res=$(aws ec2 describe-images --region "$region" --image-ids "$image_id" --query 'Images[*].{State:State}' 2>/dev/null)
 	image_state=$(echo $res | grep State | sed -E 's/.*"State":\s*"(pending|available|failed)".*/\1/' | head -n1)
 	echo -e "\t\tFound state \"$image_state\""
-	echo -e "\tSyncing disks..."
-	sync
 done
 
 if  [[ "x$image_state" == "xavailable" ]]; then
