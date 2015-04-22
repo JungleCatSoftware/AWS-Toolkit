@@ -5,6 +5,7 @@ if [[ "x${dateformat}" != "x" ]]; then
 fi
 
 cat << EOF > /etc/cron.d/FirstBoot
+SHELL=/bin/bash
 PATH=$PATH
 @reboot root doFirstBoot &> ${logdir}/firstboot.log
 EOF
