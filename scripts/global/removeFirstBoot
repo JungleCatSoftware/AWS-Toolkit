@@ -1,0 +1,15 @@
+#!/bin/bash
+echo -e "\n==Remove FirstBoot Cron=="
+if [[ "x${dateformat}" != "x" ]]; then
+        echo -e "Begin at $(date +"${dateformat}")"
+fi
+
+rm /etc/cron.d/FirstBoot
+exval=$?
+
+if [ $exval -eq 0 ]; then
+        echo -e "\t[DONE]"
+else
+        echo -e "\t[FAIL] Code: ${exval}"
+        exit $exval
+fi

@@ -1,0 +1,19 @@
+#!/bin/bash
+echo -e "\n==Install FirstBoot Cron=="
+if [[ "x${dateformat}" != "x" ]]; then
+	echo -e "Begin at $(date +"${dateformat}")"
+fi
+
+cat << EOF > /etc/cron.d/FirstBoot
+SHELL=/bin/bash
+PATH=$PATH
+@reboot root doFirstBoot &> ${logdir}/firstboot.log
+EOF
+exval=$?
+
+if [ $exval -eq 0 ]; then
+        echo -e "\t[DONE]"
+else
+        echo -e "\t[FAIL] Code: ${exval}"
+        exit $exval
+fi

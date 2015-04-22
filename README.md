@@ -3,13 +3,17 @@ Tools for generating and bootstrapping EC2 AMIs
 
 When used as described below, the launched instance will download a
 release or branch of this repository and use it to load a base
-configuration and save it as an AMI in your AWS account.
+configuration and save it as an AMI in your AWS account. It will also
+install a FirstBoot cronjob to execute `scripts/global/doFirstBoot`
+on boot of any Instances created from the AMI. Currently FirstBoot
+only removes itself so it does not run on subsequent reboots.
 
 This allows for automation of installing core tools and dependencies
 needed in order to spin up application VMs in your EC2 environment. By
 default, the scripts in this repository are made to update a stock
 Ubuntu image, install Python 3.0 and pip, Puppet, and AWS command-line
-tools.
+tools. It also prepares the AMI for auto-configuration of Images
+built from it.
 
 ## IAM Role
 When using these scripts to create AMIs, the instance must be granted
