@@ -10,3 +10,7 @@ trap 'echo "Error on line $LINENO during FirstBoot at $(date +"${dateformat}")" 
 
 #Clean up so we don't run again next time
 removeFirstBoot
+
+#Run the pre-config. This collects the new Instance UserData and
+#  uses it to collect and gather the config data, and execute it.
+doPreConfig

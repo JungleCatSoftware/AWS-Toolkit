@@ -1,0 +1,13 @@
+#!/usr/bin/python3
+
+import boto.utils
+import json
+
+UserData = { }
+
+try:
+  UserData = json.loads(boto.utils.get_instance_userdata())
+except ValueError:
+  print('Error: UserData is not JSON using default')
+
+UserData
