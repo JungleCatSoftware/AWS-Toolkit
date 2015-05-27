@@ -35,6 +35,15 @@ fi
 
 export PATH
 
+# Add Python imports path
+pythonscripts="${scriptroot}/python"
+if [ -d "${pythonscripts}" ]; then
+	echo "Found Python scripts: ${pythonscripts}"
+	PYTHONPATH="${pythonscripts}:${PYTHONPATH}"
+fi
+
+export PYTHONPATH
+
 echo -e "\nStarting at $(date +"${dateformat}")"
 export image_id_path="/tmp/ImageId"
 
