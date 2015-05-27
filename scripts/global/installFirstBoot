@@ -7,6 +7,7 @@ fi
 cat << EOF > /etc/cron.d/FirstBoot
 SHELL=/bin/bash
 PATH=$PATH
+PYTHONPATH=$PYTHONPATH
 @reboot root doFirstBoot &> ${logdir}/firstboot.log
 EOF
 exval=$?
