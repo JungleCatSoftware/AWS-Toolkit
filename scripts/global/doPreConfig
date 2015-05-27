@@ -1,13 +1,16 @@
 #!/usr/bin/python3
 
+import junglecatsoftware.awstoolkit.outputFormatters as outf
 import boto.utils
 import json
+
+outf.printSmallHeader(function='PreConfig')
+outf.printStartDateStamp()
 
 UserData = { }
 
 try:
   UserData = json.loads(boto.utils.get_instance_userdata())
 except ValueError:
-  print('Error: UserData is not JSON using default')
+  outf.printIndented('Error: UserData is not JSON! Continuing using default...', indentLevel=1)
 
-UserData
