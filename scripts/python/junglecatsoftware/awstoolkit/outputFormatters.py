@@ -16,11 +16,11 @@ def printBigHeader( author = 'Jungle Cat Software', package = 'AWS-Toolkit', fun
   print( ( '{0:*^' + str( headerLineLen ) + '}' ).format( '' ) )
 
 def printSmallHeader( function = 'Output Formatter' ):
-  print('\n==' + function + '==')
+  print( '\n==' + function + '==' )
 
 def printStartDateStamp():
   print( 'Begin at {0:%Y-%m-d %H:%M:%S.%f}'.format( datetime.datetime.now() ) )
 
-def printIndented(text,indentLevel=1):
+def printIndented( text, indentLevel = 1 ):
   for line in text.splitlines():
-    print(('\t' * indentLevel) + line)
+    print( ( '\t' * indentLevel ) + line )
