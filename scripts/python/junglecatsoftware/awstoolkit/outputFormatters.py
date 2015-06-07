@@ -5,18 +5,19 @@ def printBigHeader( author = 'Jungle Cat Software', package = 'AWS-Toolkit', fun
   firstLineLen = len( firstLine )
   secondLine = function
   secondLineLen = len( secondLine )
-
+  
   longestLineLen = firstLineLen if firstLineLen >= secondLineLen else secondLineLen
   linePadLen = longestLineLen + 2
   headerLineLen = linePadLen + 2
 
-  print( ( '{0:*^' + str( headerLineLen ) + '}' ).format( '' ) )
-  print( ( '*{0: ^' + str( linePadLen ) + '}*' ).format( firstLine ) )
-  print( ( '*{0: ^' + str( linePadLen ) + '}*' ).format( secondLine ) )
-  print( ( '{0:*^' + str( headerLineLen ) + '}' ).format( '' ) )
+  print('*' * headerLineLen)
+  formatStr = '*{{0: ^{}}}*'.format(linePadLen)
+  print(formatStr.format(firstLine))
+  print(formatStr.format(secondLine))
+  print('*' * headerLineLen)
 
 def printSmallHeader( function = 'Output Formatter' ):
-  print( '\n==' + function + '==' )
+  print('\n=={}=='.format(function))
 
 def printStartDateStamp():
   print( 'Begin at {0:%Y-%m-d %H:%M:%S.%f}'.format( datetime.datetime.now() ) )
@@ -24,3 +25,8 @@ def printStartDateStamp():
 def printIndented( text, indentLevel = 1 ):
   for line in text.splitlines():
     print( ( '\t' * indentLevel ) + line )
+
+if __name__ == "__main__":
+    printBigHeader()
+    printSmallHeader()
+    printIndented("this is my text")
