@@ -1,5 +1,4 @@
 import outputFormatters
-import StringIO
 import sys
 
 class Test_OutputFormatters(object):
