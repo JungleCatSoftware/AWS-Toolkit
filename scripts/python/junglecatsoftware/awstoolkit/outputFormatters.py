@@ -20,7 +20,7 @@ def printSmallHeader( function = 'Output Formatter' ):
   print('\n=={}=='.format(function))
 
 def printStartDateStamp():
-  print( 'Begin at {0:%Y-%m-d %H:%M:%S.%f}'.format( datetime.datetime.now() ) )
+  print( 'Begin at {0:%Y-%m-%d %H:%M:%S.%f}'.format( datetime.datetime.now() ) )
 
 def printIndented( text, indentLevel = 1 ):
   for line in text.splitlines():
@@ -30,3 +30,4 @@ if __name__ == "__main__":
     printBigHeader()
     printSmallHeader()
     printIndented("this is my text")
+    printStartDateStamp()
