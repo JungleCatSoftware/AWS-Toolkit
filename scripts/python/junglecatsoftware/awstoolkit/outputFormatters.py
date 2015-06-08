@@ -5,7 +5,7 @@ def printBigHeader( author = 'Jungle Cat Software', package = 'AWS-Toolkit', fun
   firstLineLen = len( firstLine )
   secondLine = function
   secondLineLen = len( secondLine )
-  
+
   longestLineLen = firstLineLen if firstLineLen >= secondLineLen else secondLineLen
   linePadLen = longestLineLen + 2
   headerLineLen = linePadLen + 2
