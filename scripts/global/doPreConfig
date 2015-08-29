@@ -3,14 +3,45 @@
 import junglecatsoftware.awstoolkit.outputFormatters as outf
 import boto.utils
 import json
+import os
+import subprocess
 
 outf.printSmallHeader(function='PreConfig')
 outf.printStartDateStamp()
 
-UserData = {}
+iam_role = None
+try:
+    iam_role = list(boto.utils.get_instance_metadata()['iam']['security-credentials'].keys())[0]
+except:
+    outf.printIndented( 'IAM Role not found', indentLevel=1 )
 
+# Set default values, should work for most cases
+ConfigData = {
+    'ConfigOptions': {
+        'Tool': 'shell',
+        'Script': 'echo -e "Failed to get config options.\nDid you forget to update values \'Tool\' and \'Script\'?"',
+    }
+}
+
+# Update config data using Instance UserData
 try:
     UserData = json.loads(boto.utils.get_instance_userdata())
+    ConfigData.update( UserData )
 except ValueError:
-    outf.printIndented('Error: UserData is not JSON! Continuing using default...', indentLevel=1)
+    outf.printIndented( 'Error: UserData is not JSON! Continuing using default...', indentLevel=1 )
 
+f = open(os.environ['configScript'], 'w+')
+f.write(ConfigData['ConfigOptions']['Script'])
+
+ConfigTool = ConfigData['ConfigOptions']['Tool']
+p = None
+
+if ( ConfigTool == 'shell' ):
+    p = subprocess.Popen( [ '/bin/bash', os.environ['configScript'] ], shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT )
+elif ( ConfigTool == 'puppet' ):
+    p = subprocess.Popen( [ '/usr/bin/puppet', 'apply', os.environ['configScript'] ], shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT )
+
+if ( p is not None ):
+    for line in p.stdout.readlines():
+        print(line)
+    retval = p.wait()
