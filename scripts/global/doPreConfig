@@ -4,22 +4,21 @@ import junglecatsoftware.awstoolkit.outputFormatters as outf
 import boto.utils
 import json
 import os
-import subprocess
 
-outf.printSmallHeader(function='PreConfig')
+outf.printSmallHeader( function='PreConfig' )
 outf.printStartDateStamp()
 
 iam_role = None
 try:
-    iam_role = list(boto.utils.get_instance_metadata()['iam']['security-credentials'].keys())[0]
+    iam_role = list( boto.utils.get_instance_metadata()['iam']['security-credentials'].keys() )[0]
 except:
     outf.printIndented( 'IAM Role not found', indentLevel=1 )
 
 # Set default values, should work for most cases
 ConfigData = {
-    'ConfigOptions': {
-        'Tool': 'shell',
-        'Script': 'echo -e "Failed to get config options.\nDid you forget to update values \'Tool\' and \'Script\'?"',
+    'options': {
+        'tool': 'shell',
+        'script': 'echo -e "Failed to get config options.\\nDid you forget to update values \\"tool\\" and \\"script\\"?"',
     }
 }
 
@@ -30,18 +29,30 @@ try:
 except ValueError:
     outf.printIndented( 'Error: UserData is not JSON! Continuing using default...', indentLevel=1 )
 
-f = open(os.environ['configScript'], 'w+')
-f.write(ConfigData['ConfigOptions']['Script'])
+ConfigTool = ConfigData['options']['tool']
 
-ConfigTool = ConfigData['ConfigOptions']['Tool']
-p = None
+# create dependency file, if needed
+if ( 'dependancies' in ConfigData['options'] ):
+    with open( os.environ['configScript']+'.deps', 'w+' ) as depscript:
+        print( '#!/bin/bash', file=depscript )
+        for key in list( ConfigData['options']['dependancies'].keys() ):
+            dep_name = key
+            dep_type = ConfigData['options']['dependancies'][key]['type']
+            dep_source = ConfigData['options']['dependancies'][key]['source']
+            dep_ignore_dependencies = ''
+            if ( 'ignore-dependencies' in list( ConfigData['options']['dependancies'][key].keys() ) ):
+                if ( ConfigData['options']['dependancies'][key]['ignore-dependencies'] ):
+                    dep_ignore_dependencies = ' --ignore-dependencies '
+            if ( dep_type == 'puppet-forge' ):
+                print( '/usr/bin/puppet module install ' + dep_source + dep_ignore_dependencies, file=depscript )
+            elif ( dep_type == 'puppet-tarball' ):
+                print( '/usr/bin/wget -O /tmp/' + dep_name + '.tar.gz ' + dep_source + '&& \\', file=depscript )
+                print( '/usr/bin/puppet module install /tmp/' + dep_name + '.tar.gz' + dep_ignore_dependencies, file=depscript )
 
-if ( ConfigTool == 'shell' ):
-    p = subprocess.Popen( [ '/bin/bash', os.environ['configScript'] ], shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT )
-elif ( ConfigTool == 'puppet' ):
-    p = subprocess.Popen( [ '/usr/bin/puppet', 'apply', os.environ['configScript'] ], shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT )
-
-if ( p is not None ):
-    for line in p.stdout.readlines():
-        print(line)
-    retval = p.wait()
+# dump script to file
+with open( os.environ['configScript'], 'w+' ) as confscript:
+    if ( ConfigTool == 'shell' ):
+        print( '#!/bin/bash', file=confscript )
+    elif ( ConfigTool == 'puppet' ):
+        print( '#!/usr/bin/puppet apply', file=confscript )
+    print( ConfigData['options']['script'], file=confscript )

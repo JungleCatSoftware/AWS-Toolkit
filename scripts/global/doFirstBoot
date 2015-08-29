@@ -14,5 +14,16 @@ removeFirstBoot
 export configScript='/tmp/configScript'
 
 #Run the pre-config. This collects the new Instance UserData and
-#  uses it to collect and gather the config data, and execute it.
+#  uses it to collect and gather the config data, and generate
+#  scripts to execute the config steps
 doPreConfig
+
+#Run config dependencies
+if [ -f ${configScript}.deps ]; then
+  chmod +x ${configScript}.deps
+  ${configScript}.deps
+fi
+
+#Run config script
+chmod +x ${configScript}
+${configScript}
