@@ -41,12 +41,13 @@ if ( 'dependancies' in ConfigData['options'] ):
             dep_source = ConfigData['options']['dependancies'][key]['source']
             dep_ignore_dependencies = ''
             if ( 'ignore-dependencies' in list( ConfigData['options']['dependancies'][key].keys() ) ):
-                if ( ConfigData['options']['dependancies'][key]['ignore-dependencies'] ):
+                if ( ConfigData['options']['dependancies'][key]['ignore-dependencies'] == 'True' ):
+                    # JSON only allows for strings, so check for "True" as string
                     dep_ignore_dependencies = ' --ignore-dependencies '
             if ( dep_type == 'puppet-forge' ):
                 print( '/usr/bin/puppet module install ' + dep_source + dep_ignore_dependencies, file=depscript )
             elif ( dep_type == 'puppet-tarball' ):
-                print( '/usr/bin/wget -O /tmp/' + dep_name + '.tar.gz ' + dep_source + '&& \\', file=depscript )
+                print( '/usr/bin/wget -O /tmp/' + dep_name + '.tar.gz ' + dep_source + ' && \\', file=depscript )
                 print( '/usr/bin/puppet module install /tmp/' + dep_name + '.tar.gz' + dep_ignore_dependencies, file=depscript )
 
 # dump script to file
