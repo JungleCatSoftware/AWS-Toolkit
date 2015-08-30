@@ -49,3 +49,77 @@ The URL can be modified to point to branches or tags other than
 #!/bin/bash
 curl -L https://raw.githubusercontent.com/JungleCatSoftware/AWS-Toolkit/master/UserData | /bin/bash
 ```
+
+## Booting From Generated AMI
+After generating the AMI using the above methods, it can now be launched
+with Instance User Data to define how configuration should be started. At
+present, configuration information must be passed in as a JSON document
+at instance launch.
+
+For example, the following User Data can be passed in at launch to install
+a basic Apache web server:
+
+```json
+{
+    "options": {
+        "tool": "puppet",
+        "script": "include ::apache",
+        "dependancies": {
+            "concat": {
+                "type": "puppet-forge",
+                "source": "puppetlabs-concat"
+            },
+            "puppetlabs-apache-2.0.0": {
+                "type": "puppet-tarball",
+                "source": "https://github.com/puppetlabs/puppetlabs-apache/archive/2.0.x.tar.gz",
+                "ignore-dependencies": "True"
+            }
+        }
+    }
+}
+````
+
+### Configuration Options
+This section will cover the values that can be passed to the instance when
+launched
+
+#### tool
+Supported values: puppet, shell
+
+- shell: run the contents of `script` with `/bin/bash`. It is not recommended
+  to use this tool other than for testing.
+- puppet: treat the contents of `script` as a Puppet manifest and will run
+  using `/usr/bin/puppet apply`. This is the recommended tool.
+
+#### script
+These are the commands to run on boot. This script should be as minimal as
+possible, ideally a single line, such as an import for a single Puppet
+class (such as a specific role if using the profiles and roles pattern).
+
+#### dependencies
+This is a hash of dependencies to retrieve prior to script execution. It
+consists of the dependency name, followed by a hash of it's configuration
+information.
+
+##### type
+Supported values: puppet-forge, puppet-tarball
+
+- puppet-forge: download and install the module named in "source" from
+  https://forge.puppet.com/
+- puppet-tarball: download and install the tarballed module from the URL
+  "source". The tarball will be named as the dependency name, so be aware
+  that earlier versions of Puppet will expect the username and version to
+  be present in this name. (later Puppet versions use the metadata.json to
+  get this information)
+
+##### source
+The source of the dependency. For puppet-forge this is the module's name/id,
+for puppet-tarball this is the URL to download the tarball from.
+
+##### ignore-dependencies
+Only applies to "puppet-" types. Valid values are the strings "True" and
+"False" (assumes "False" otherwise). This controls whether the Puppet module
+install should automatically retrieve dependencies from the Puppet Forge. This
+should be left as the default when downloading modules from the Forge, but
+should be set to True if downloading module tarballs for modules not present
+on the Forge (such as custom modules on GitHub)
